@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
 {
+  
     //컴포넌트를 캐시 처리할 변수
-    private Transform tr;
+    [SerializeField] private Transform tr;
+    public float moveSpeed = 10.0f;
 
     void Start()
     {
@@ -22,6 +24,8 @@ public class PlayerCtrl : MonoBehaviour
         Debug.Log("v="+v);
 
         //Transform 컴포넌트의 position 속성값을 변경
-        transform.position += Vector3.forward*1;
+        //transform.position += Vector3.forward*1;
+        Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
+        tr.Translate(moveDir * moveSpeed * Time.deltaTime);
     }
 }
