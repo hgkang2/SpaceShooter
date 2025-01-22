@@ -9,6 +9,8 @@ public class PlayerCtrl : MonoBehaviour
     [SerializeField] private Transform tr;
     public float moveSpeed = 10.0f;
 
+    public float turnSpeed = 80.0f;
+
     void Start()
     {
         // Transform 컴포넌트를 추출해 변수에 대입
@@ -19,13 +21,15 @@ public class PlayerCtrl : MonoBehaviour
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
+        float r = Input.GetAxis("Mouse X");
 
-        Debug.Log("h="+h);
-        Debug.Log("v="+v);
+        //Debug.Log("h="+h);
+        //Debug.Log("v="+v);
 
         //Transform 컴포넌트의 position 속성값을 변경
         //transform.position += Vector3.forward*1;
         Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
         tr.Translate(moveDir * moveSpeed * Time.deltaTime);
+        tr.Rotate(Vector3.up * turnSpeed * Time.deltaTime * r);
     }
 }
