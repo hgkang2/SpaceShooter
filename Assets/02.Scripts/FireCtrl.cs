@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,9 +11,13 @@ public class FireCtrl : MonoBehaviour
     public Transform firePos;
     public AudioClip firesfx;
     private new AudioSource audio;
+    private MeshRenderer muzzleFlash;
     void Start()
     {
         audio = GetComponent<AudioSource>();
+        muzzleFlash = firePos.GetComponentInChildren<MeshRenderer>();
+        //처음 시작할 때 비활성화
+        muzzleFlash.enabled = false;
     }
 
     void Update()
@@ -26,5 +31,16 @@ public class FireCtrl : MonoBehaviour
     {
         Instantiate(bullet, firePos.position, firePos.rotation);
         audio.PlayOneShot(firesfx, 1.0f);
+        StartCoroutine(ShowMuzzleFlash());
+    }
+
+    IEnumerable ShowMuzzleFlash()
+    {
+        //MuzzleFlash 활성화
+        muzzleFlash.enabled = true;
+        //0.2초 동안 대기 (제어권 양보)
+        yield return new WaitForSeconds(0.2f);
+        //MuzzleFlash 비활성화
+        muzzleFlash.enabled = false;
     }
 }
