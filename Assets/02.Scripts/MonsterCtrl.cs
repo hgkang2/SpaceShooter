@@ -6,6 +6,10 @@ using UnityEngine.AI;
 using UnityEngine.UIElements;
 public class MonsterCtrl : MonoBehaviour
 {
+    //해시값 추출
+    private readonly int hashTrace = Animator.StringToHash("IsTrace");
+    private readonly int hashAttack = Animator.StringToHash("IsAttack");
+    private readonly int hashHit = Animator.StringToHash("Hit");
     public enum State
     {
         IDLE,
@@ -65,14 +69,16 @@ public class MonsterCtrl : MonoBehaviour
             {
             case State.IDLE:
             agent.isStopped = true;
-            anim.SetBool("IsTrace",false);
+            anim.SetBool(hashTrace,false);
             break;
             case State.TRACE:
             agent.SetDestination(playerTr.position);
             agent.isStopped = false;
-            anim.SetBool("IsTrace",true);
+            anim.SetBool(hashTrace,true);
+            anim.SetBool(hashAttack,false);
             break;
             case State.ATTACK:
+            anim.SetBool(hashAttack, true);
             break;
             case State.DIE:
             break;

@@ -1525,6 +1525,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4702684789222347016, guid: 3628166335e4ec74f80560e91570aaa7, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4702684789222347017, guid: 3628166335e4ec74f80560e91570aaa7, type: 3}
       propertyPath: m_Name
       value: Wall_1
@@ -2275,7 +2279,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 641ff25f5da444ddf8874d961a56f0c9, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -2724,6 +2728,20 @@ MonoBehaviour:
   traceDist: 10
   attackDist: 2
   isDie: 0
+--- !u!136 &1920178967
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920178959}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1923332293
 GameObject:
   m_ObjectHideFlags: 0
