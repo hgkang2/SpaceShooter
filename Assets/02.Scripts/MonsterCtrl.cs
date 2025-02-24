@@ -11,6 +11,7 @@ public class MonsterCtrl : MonoBehaviour
     private readonly int hashTrace = Animator.StringToHash("IsTrace");
     private readonly int hashAttack = Animator.StringToHash("IsAttack");
     private readonly int hashHit = Animator.StringToHash("Hit");
+    private readonly int hashPlayerDie = Animator.StringToHash("PlayerDie");
 
 
     public const float TIMER_CHECK = 0.3f;
@@ -133,5 +134,15 @@ public class MonsterCtrl : MonoBehaviour
     {
         GameObject blood = Instantiate<GameObject>(bloodEffect, pos, rot, monsterTr);
         Destroy(blood,1.0f);
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+      Debug.Log(other.gameObject.name);   
+    }
+    private void OnPlayerDie()
+    {
+        StopAllCoroutines();
+        agent.isStopped = true;
+        animator.SetTrigger(hashPlayerDie);
     }
 }
