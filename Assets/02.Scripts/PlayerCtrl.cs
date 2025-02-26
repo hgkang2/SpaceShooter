@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
 {
+    #region private
     private Transform tr;
     private Animation anim;
     private readonly float initHp = 100.0f; // 초기 생명값
     private const float DAMAGE_HP = 10.0f;
+    #endregion private
 
+    #region public
     public float currHp; // 현재 생명값
     public float moveSpeed = 10.0f; // 이동속도 변수
     public float turnSpeed = 80.0f; // 회전속도 변수
+    public delegate void PlayerDieHandler();
+    public static event PlayerDieHandler OnPlayerDie;
+    #endregion public
 
     IEnumerator Start()
     {

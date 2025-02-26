@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,7 +10,7 @@ public class MonsterCtrl : MonoBehaviour
     private readonly int hashAttack = Animator.StringToHash("IsAttack");
     private readonly int hashHit = Animator.StringToHash("Hit");
     private readonly int hashPlayerDie = Animator.StringToHash("PlayerDie");
-
+    private readonly int hashSpeed = Animator.StringToHash("Speed");
 
     public const float TIMER_CHECK = 0.3f;
     public enum State
@@ -32,9 +30,7 @@ public class MonsterCtrl : MonoBehaviour
     private Transform playerTr;
     private NavMeshAgent agent;
     private Animator animator;
-    
-    //혈흔 효과 프리펩
-    private GameObject bloodEffect;
+    private GameObject bloodEffect; // 혈흔 효과 프리팹
 
     void Start()
     {
@@ -43,6 +39,7 @@ public class MonsterCtrl : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         bloodEffect = Resources.Load<GameObject>("BloodSprayEffect");
+
         //agent.destination = playerTr.position;
         // 몬스터의 상태를 체크하는 코루틴 함수 호출
         StartCoroutine(CheckMonsterState());
@@ -121,28 +118,34 @@ public class MonsterCtrl : MonoBehaviour
             // 피격 애니메이션 실행
             animator.SetTrigger(hashHit);
 
-            //총알의 충돌 지점
+            // 총알의 충돌 지점
             Vector3 pos = collision.GetContact(0).point;
-            //총알의 충돌 지점의 법선 벡터
+            // normal vector
             Quaternion rot = Quaternion.LookRotation(-collision.GetContact(0).normal);
-            //혈흔 효과를 생성하는 함수 호출
-            ShowBloodEffect(pos,rot);
+            // 혈흔 효과를 생성하는 함수 호출
+            ShowBloodEffect(pos, rot);
         }
     }
 
     private void ShowBloodEffect(Vector3 pos, Quaternion rot)
     {
         GameObject blood = Instantiate<GameObject>(bloodEffect, pos, rot, monsterTr);
-        Destroy(blood,1.0f);
+        Destroy(blood, 1.0f);
     }
+
     private void OnTriggerEnter(Collider other)
     {
-      Debug.Log(other.gameObject.name);   
+        Debug.Log(other.gameObject.name);
     }
+
     private void OnPlayerDie()
     {
+        // 몬스터의 상태를 체크하는 코루틴 정지
         StopAllCoroutines();
+
+        // 추적 정지, 애니메이션 실행
         agent.isStopped = true;
+        animator.SetFloat(hashSpeed, Random.Range(0.8f, 1.2f));
         animator.SetTrigger(hashPlayerDie);
     }
 }
