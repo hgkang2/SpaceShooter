@@ -11,6 +11,7 @@ public class MonsterCtrl : MonoBehaviour
     private readonly int hashHit = Animator.StringToHash("Hit");
     private readonly int hashPlayerDie = Animator.StringToHash("PlayerDie");
     private readonly int hashSpeed = Animator.StringToHash("Speed");
+    private readonly int hashDie = Animator.StringToHash("Die");
 
     public const float TIMER_CHECK = 0.3f;
     public enum State
@@ -25,12 +26,22 @@ public class MonsterCtrl : MonoBehaviour
     public float traceDist = 10.0f;
     public float attackDist = 2.0f;
     public bool isDie = false;
+    
 
     private Transform monsterTr;
     private Transform playerTr;
     private NavMeshAgent agent;
     private Animator animator;
     private GameObject bloodEffect; // 혈흔 효과 프리팹
+    private int hp = 100;
+    void OnEnable()
+    {
+        PlayerCtrl.OnPlayerDie += this.OnPlayerDie;
+    }
+    void OnDisable()
+    {
+        PlayerCtrl.OnPlayerDie -= this.OnPlayerDie;
+    }
 
     void Start()
     {
@@ -53,6 +64,7 @@ public class MonsterCtrl : MonoBehaviour
         {
             // 0.3초 대기하는 동안 제어권 넘김
             yield return new WaitForSeconds(TIMER_CHECK);
+            if(state == State.DIE) yield break;
             float distance = Vector3.Distance(playerTr.position, monsterTr.position);
             if (distance <= attackDist)
             {
@@ -103,6 +115,15 @@ public class MonsterCtrl : MonoBehaviour
                     animator.SetBool(hashAttack, true);
                     break;
                 case State.DIE:
+                isDie = true;
+                isDie.isStopped = true;
+                animator.SetTrigger(hashDie);
+                GetComponent<CapsuleCollider>().enabled = false;
+                SphereCollider[] sc = GetComponentInChildren<SphereCollider>();
+                foreach (var item in sc)
+                {
+                    item.enabled = false;
+                }
                     break;
             }
             yield return new WaitForSeconds(TIMER_CHECK);
@@ -124,6 +145,11 @@ public class MonsterCtrl : MonoBehaviour
             Quaternion rot = Quaternion.LookRotation(-collision.GetContact(0).normal);
             // 혈흔 효과를 생성하는 함수 호출
             ShowBloodEffect(pos, rot);
+            hp -= 10;
+            if(hp<=0)
+            {
+                state = State.DIE;
+            }
         }
     }
 
