@@ -913,6 +913,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f793d32297ddb94e96a2f6f589e3883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startButton: {fileID: 622798682}
+  optionButton: {fileID: 1786389401}
+  shopButton: {fileID: 2090623544}
 --- !u!4 &725990721
 Transform:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCtrl : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerCtrl : MonoBehaviour
     private Animation anim;
     private readonly float initHp = 100.0f; // 초기 생명값
     private const float DAMAGE_HP = 10.0f;
+    private Image hpBar;
     #endregion
 
     #region Public
@@ -22,7 +24,9 @@ public class PlayerCtrl : MonoBehaviour
 
     IEnumerator Start()
     {
+        hpBar = GameObject.FindGameObjectsWithTag("HP_BAR")?.GetComponent<Image>();
         currHp = initHp;
+        DisplayHealth();
         tr = GetComponent<Transform>();
         anim = GetComponent<Animation>();
 
@@ -118,5 +122,9 @@ public class PlayerCtrl : MonoBehaviour
         
         // 주인공 사망 이벤트 호출(발생)
         OnPlayerDie();
+    }
+    void DisplayHealth()
+    {
+        hpBar.fillAmount = currHp/initHp;
     }
 }
